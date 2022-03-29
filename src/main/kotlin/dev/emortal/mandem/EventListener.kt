@@ -55,14 +55,17 @@ class EventListener(val plugin: MandemPlugin) {
         leavingTasks.remove(e.player.uniqueId)
 
         val cachedUsername = redisson.getBucket<String>("${e.player.uniqueId}username")
+        logger.info(cachedUsername.get())
 
         RelationshipManager.partyInviteMap[e.player.uniqueId] = mutableListOf()
         RelationshipManager.friendRequestMap[e.player.uniqueId] = mutableListOf()
 
         // If cache is outdated, re-set
         // May be better to use SQL instead of redis for this... :P
+        storage?.setCachedUsername(e.player.uniqueId, e.player.username)
         if (cachedUsername.get() != e.player.username) {
             cachedUsername.set(e.player.username)
+
         }
     }
 
@@ -116,6 +119,16 @@ class EventListener(val plugin: MandemPlugin) {
         val player = e.player
         e.result = PlayerChatEvent.ChatResult.denied()
 
+        val message = if (player.hasPermission("chat.colors")) {
+            try {
+                miniMessage.deserialize(e.message.replace("<br>", ""))
+            } catch (ignored: Exception) {
+                Component.text(e.message)
+            }
+        } else {
+            Component.text(e.message)
+        }
+
         chatLogger.info("${player.displayName.plainText()}: ${e.message}")
 
         if (player.channel == ChatChannel.PARTY) {
@@ -136,11 +149,23 @@ class EventListener(val plugin: MandemPlugin) {
                     .append(partyPrefix)
                     .append(player.displayName)
                     .append(Component.text(": "))
-                    .append(Component.text(e.message))
+                    .append(message)
+                    .build()
+            )
+            return
+        }
+
+
+
+        server.allPlayers.forEach {
+            it.sendMessage(
+                Component.text()
+                    .append(player.displayName)
+                    .append(Component.text(": "))
+                    .append(message)
                     .build()
             )
         }
-
 
     }
 

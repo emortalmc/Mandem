@@ -17,6 +17,7 @@ import dev.emortal.mandem.db.MySQLStorage
 import dev.emortal.mandem.db.Storage
 import dev.emortal.mandem.utils.RedisStorage.redisson
 import net.luckperms.api.LuckPerms
+import net.luckperms.api.LuckPermsProvider
 import java.nio.file.Path
 import java.util.logging.Logger
 
@@ -33,6 +34,7 @@ class MandemPlugin @Inject constructor(private val server: ProxyServer, private 
     fun onProxyInitialization(event: ProxyInitializeEvent) {
         mandemConfig = ConfigHelper.initConfigFile(configPath, MandemConfig())
         plugin = this
+        luckperms = LuckPermsProvider.get()
 
         if (mandemConfig.enabled) {
             storage = MySQLStorage()

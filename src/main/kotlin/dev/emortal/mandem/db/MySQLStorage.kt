@@ -1,5 +1,6 @@
 package dev.emortal.mandem.db
 
+import com.velocitypowered.api.event.EventTask.async
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import dev.emortal.mandem.MandemPlugin
@@ -33,6 +34,11 @@ class MySQLStorage : Storage() {
             conn.prepareStatement("CREATE TABLE IF NOT EXISTS blocks (`playerA` BINARY(16), `playerB` BINARY(16))")
         statement2.executeUpdate()
         statement2.close()
+
+        val statement3 =
+            conn.prepareStatement("CREATE TABLE IF NOT EXISTS namecache (`player` BINARY(16), `username` VARCHAR(20))")
+        statement3.executeUpdate()
+        statement3.close()
 
         conn.autoCommit = true
         conn.close()
@@ -93,6 +99,50 @@ class MySQLStorage : Storage() {
             statement.close()
             conn.close()
         }
+    }
+
+    override fun setCachedUsername(player: UUID, username: String): Unit = runBlocking {
+        launch {
+            val conn = getConnection()
+            conn.autoCommit = false
+
+            val statement = conn.prepareStatement("DELETE FROM namecache WHERE player=?")
+            statement.setBinaryStream(1, player.toInputStream())
+
+            statement.executeUpdate()
+            statement.close()
+
+            val statement2 = conn.prepareStatement("INSERT INTO namecache VALUES(?, ?)")
+            statement2.setBinaryStream(1, player.toInputStream())
+            statement2.setString(2, username)
+
+            statement2.executeBatch()
+            statement2.close()
+
+            conn.autoCommit = true
+
+            statement.close()
+            conn.close()
+        }
+    }
+
+    override suspend fun getCachedUsernameAsync(player: UUID): String? = coroutineScope {
+        return@coroutineScope async {
+            val conn = getConnection()
+            val statement = conn.prepareStatement("SELECT username FROM namecache WHERE player=?")
+
+            statement.setBinaryStream(1, player.toInputStream())
+
+            val results = statement.executeQuery()
+
+            var name: String? = null
+            if (results.first()) name = results.getString(1)
+
+            statement.close()
+            conn.close()
+
+            return@async name
+        }.await()
     }
 
     override suspend fun getFriendsAsync(player: UUID): MutableList<UUID> = coroutineScope {
