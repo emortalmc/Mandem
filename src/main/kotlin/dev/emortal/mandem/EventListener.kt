@@ -1,5 +1,6 @@
 package dev.emortal.mandem
 
+import com.velocitypowered.api.event.PostOrder
 import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.command.CommandExecuteEvent
 import com.velocitypowered.api.event.connection.DisconnectEvent
@@ -25,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.TextReplacementConfig
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.slf4j.LoggerFactory
@@ -114,22 +116,47 @@ class EventListener(val plugin: MandemPlugin) {
         commandLogger.info("${username} ran command: ${e.command}")
     }
 
-    @Subscribe
+    @Subscribe(order = PostOrder.LAST)
     fun onChat(e: PlayerChatEvent) {
+        if (e.result == PlayerChatEvent.ChatResult.denied()) return
+
         val player = e.player
         e.result = PlayerChatEvent.ChatResult.denied()
 
+        val replacedMessage = e.message
+            .replace("<br>", "", true)
+            .replace("\uF801", "", true)
+            .replace("\uF802", "", true)
+            .replace("\uF803", "", true)
+            .replace("\uF804", "", true)
+            .replace("\uF805", "", true)
+            .replace("\uF806", "", true)
+            .replace("\uF807", "", true)
+            .replace("\uF808", "", true)
+            .replace("\uE006", "", true)
+            .replace("\uE008", "", true)
+            .replace("\uE009", "", true)
+            .replace("\uE010", "", true)
+            .replace("\uE00A", "", true)
+            .replace("\uE00C", "", true)
+            .replace("\uE00D", "", true)
+            .replace("\uE00E", "", true)
+            .replace("\uE00F", "", true)
+            .replace("\uE011", "", true)
+
+        if (replacedMessage.isBlank()) return
+
         val message = if (player.hasPermission("chat.colors")) {
             try {
-                miniMessage.deserialize(e.message.replace("<br>", ""))
+                miniMessage.deserialize(replacedMessage)
             } catch (ignored: Exception) {
-                Component.text(e.message)
+                Component.text(replacedMessage)
             }
         } else {
-            Component.text(e.message)
+            Component.text(replacedMessage)
         }
 
-        chatLogger.info("${player.displayName.plainText()}: ${e.message}")
+        chatLogger.info("${player.displayName.plainText()}: ${replacedMessage}")
 
         if (player.channel == ChatChannel.PARTY) {
             if (player.party == null) {

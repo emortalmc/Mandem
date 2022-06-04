@@ -41,7 +41,6 @@ class MandemPlugin @Inject constructor(private val server: ProxyServer, private 
         }
 
         Companion.server = server
-        GameManager.initListener()
 
         server.eventManager.register(this, EventListener(this))
 

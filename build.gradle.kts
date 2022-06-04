@@ -41,4 +41,8 @@ tasks {
     build {
         dependsOn(shadowJar)
     }
+
+    shadowJar {
+        relocate("com.zaxxer.hikari", "dev.emortal.mandem.libs.hikari")
+    }
 }
