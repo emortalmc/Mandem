@@ -7,9 +7,6 @@ import com.velocitypowered.api.event.proxy.ProxyShutdownEvent
 import com.velocitypowered.api.plugin.Dependency
 import com.velocitypowered.api.plugin.Plugin
 import com.velocitypowered.api.proxy.ProxyServer
-import dev.emortal.mandem.commands.ChannelCommand
-import dev.emortal.mandem.commands.PartyCommand
-import dev.emortal.mandem.commands.ReplyCommand
 import dev.emortal.mandem.commands.ShrugCommand
 import dev.emortal.mandem.config.ConfigHelper
 import dev.emortal.mandem.config.MandemConfig
@@ -26,7 +23,7 @@ import java.util.logging.Logger
     name = "Mandem",
     version = "1.0.0",
     description = "Wait, who's mandem?",
-    dependencies = [Dependency(id = "luckperms")]
+    dependencies = [Dependency(id = "luckperms"), Dependency(id = "datadependency")]
 )
 class MandemPlugin @Inject constructor(private val server: ProxyServer, private val logger: Logger) {
 

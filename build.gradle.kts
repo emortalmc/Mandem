@@ -22,13 +22,13 @@ dependencies {
     kapt("com.velocitypowered:velocity-api:3.0.0")
     //implementation(kotlin("reflect"))
     implementation(kotlin("stdlib-jdk8"))
-    implementation("net.kyori:adventure-text-minimessage:4.10.1")
-    implementation("org.redisson:redisson:3.16.8")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    implementation("net.kyori:adventure-text-minimessage:4.11.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
-    implementation("mysql:mysql-connector-java:8.0.28")
-    implementation("com.zaxxer:HikariCP:5.0.1")
+    compileOnly("org.redisson:redisson:3.17.4")
+    compileOnly("mysql:mysql-connector-java:8.0.28")
+    compileOnly("com.zaxxer:HikariCP:5.0.1")
 
     compileOnly("net.luckperms:api:5.4")
 }

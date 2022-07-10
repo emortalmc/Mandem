@@ -2,9 +2,6 @@ package dev.emortal.mandem
 
 import com.velocitypowered.api.proxy.Player
 import com.velocitypowered.api.scheduler.ScheduledTask
-import dev.emortal.mandem.MandemPlugin.Companion.plugin
-import dev.emortal.mandem.MandemPlugin.Companion.server
-import dev.emortal.mandem.RelationshipManager.removeFriend
 import dev.emortal.mandem.channel.ChatChannel
 import dev.emortal.mandem.utils.RedisStorage.redisson
 import kotlinx.coroutines.runBlocking
@@ -14,7 +11,6 @@ import net.kyori.adventure.text.event.HoverEvent
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
-import java.time.Duration
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 

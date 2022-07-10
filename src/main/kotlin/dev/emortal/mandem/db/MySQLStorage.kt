@@ -1,6 +1,5 @@
 package dev.emortal.mandem.db
 
-import com.velocitypowered.api.event.EventTask.async
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import dev.emortal.mandem.MandemPlugin
