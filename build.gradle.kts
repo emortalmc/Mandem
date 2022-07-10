@@ -27,7 +27,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
     compileOnly("org.redisson:redisson:3.17.4")
-    compileOnly("mysql:mysql-connector-java:8.0.28")
+    compileOnly("mysql:mysql-connector-java:8.0.29")
     compileOnly("com.zaxxer:HikariCP:5.0.1")
 
     compileOnly("net.luckperms:api:5.4")
@@ -43,6 +43,6 @@ tasks {
     }
 
     shadowJar {
-        relocate("com.zaxxer.hikari", "dev.emortal.mandem.libs.hikari")
+        relocate("com.zaxxer.hikari", "dev.emortal.datadependency.libs.hikari")
     }
 }
