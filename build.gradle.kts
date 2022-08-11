@@ -18,16 +18,19 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.velocitypowered:velocity-api:3.0.0")
-    kapt("com.velocitypowered:velocity-api:3.0.0")
+    //compileOnly("com.velocitypowered:velocity-api:3.1.0")
+    //kapt("com.velocitypowered:velocity-api:3.1.0")
+    compileOnly(files("libs/velocity-api-3.1.2-SNAPSHOT-all.jar"))
+    kapt(files("libs/velocity-api-3.1.2-SNAPSHOT-all.jar"))
+
     //implementation(kotlin("reflect"))
     implementation(kotlin("stdlib-jdk8"))
     implementation("net.kyori:adventure-text-minimessage:4.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
-    compileOnly("org.redisson:redisson:3.17.4")
-    compileOnly("mysql:mysql-connector-java:8.0.29")
+    compileOnly("org.redisson:redisson:3.17.5")
+    compileOnly("mysql:mysql-connector-java:8.0.30")
     compileOnly("com.zaxxer:HikariCP:5.0.1")
 
     compileOnly("net.luckperms:api:5.4")
